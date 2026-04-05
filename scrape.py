@@ -25,7 +25,7 @@ print("--- DEBUG END ---")
 
 
 url = "https://books.toscrape.com/"
-response = requests.get(url, timeout=20)
+response = requests.get(url, timeout=40)
 response.encoding = "utf-8"                            # ensure £ signs display correctly
 soup = BeautifulSoup(response.text, "html.parser")
 
