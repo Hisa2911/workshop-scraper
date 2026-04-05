@@ -119,7 +119,7 @@ for _, row in df.iterrows():
         "availability": str(row.get("availability", "")),
         "scraped_at":   scrape_time,
         "price_tier": str(row.get("price_tier", "")),
-        "rating_numeric": str(row.get("rating_numeric", "")),
+        "rating_numeric": int(row.get("rating_numeric", "")),
         "in_stock": bool(row.get("in_stock", ""))
     })
 
