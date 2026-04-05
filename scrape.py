@@ -3,6 +3,8 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 from datetime import datetime
+from supabase import create_client
+from datetime import datetime
 
 url = "https://books.toscrape.com/"
 response = requests.get(url, timeout=20)
@@ -39,6 +41,13 @@ for book in soup.select(".product_pod"):
     })
 
 df = pd.DataFrame(rows)
+
+
+
+
+
+
+
 
 # Remove currency symbols and convert to a decimal number
 # Note: you may see "Â£51.77" instead of "£51.77" — this is a
@@ -90,3 +99,34 @@ if os.path.exists(filename):
   df.to_csv(filename, mode = "a", header = False, index =False)
 else:
   df.to_csv(filename, index=False)
+
+
+
+
+
+
+
+
+
+
+SUPABASE_URL = os.environ["SUPABASE_URL"]
+SUPABASE_KEY = os.environ["SUPABASE_KEY"]
+
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+scrape_time = datetime.now().isoformat()
+
+rows = []
+for _, row in df.iterrows():
+    rows.append({
+        "title":        str(row.get("title", "")),
+        "price_eur":    float(row.get("price_eur", 0)),
+        "star_rating":  str(row.get("star_rating", "")),
+        "availability": str(row.get("availability", "")),
+        "scraped_at":   scrape_time,
+        "price_tier": str(row.get("price_tier", "")),
+        "rating_numeric": str(row.get("rating_numeric", "")),
+        "in_stock": bool(row.get("in_stock", ""))
+    })
+
+result = supabase.table("books").insert(rows).execute()
