@@ -59,7 +59,7 @@ for book in soup.select(".product_pod"):
     })
 
 df = pd.DataFrame(rows)
-
+print("scraped the basic attributes")
 
 
 
@@ -110,7 +110,7 @@ df["in_stock"] = df["availability"].str.contains("In stock", na=False)
 # Example: drop the raw price string (you already have price_eur)
 # errors="ignore" means: if the column does not exist, do nothing
 df = df.drop(columns=["price_raw"], errors="ignore")
-
+print("all the trimming is done")
 
 
 
