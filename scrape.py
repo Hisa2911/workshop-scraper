@@ -124,3 +124,14 @@ for _, row in df.iterrows():
     })
 
 result = supabase.table("books").insert(rows).execute()
+
+
+try:
+    response = supabase.table("books").insert(rows).execute()
+    print("Successfully inserted data!")
+    print(f"Inserted {len(rows)} rows.")
+except Exception as e:
+    print("--- SUPABASE ERROR ---")
+    print(e)
+    # This line forces GitHub Actions to show a Red X if it fails
+    exit(1)
