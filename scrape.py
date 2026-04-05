@@ -130,26 +130,32 @@ scrape_time = datetime.now().isoformat()
 
 rows = []
 for _, row in df.iterrows():
+    # Convert rating to int, default to 0 if it's NaN or empty
+    try:
+        r_num = int(row["rating_numeric"])
+    except:
+        r_num = 0
+
     rows.append({
-        "title":        str(row.get("title", "")),
-        "price_eur":    float(row.get("price_eur", 0)),
-        "star_rating":  str(row.get("star_rating", "")),
-        "availability": str(row.get("availability", "")),
-        "scraped_at":   scrape_time,
-        "price_tier": str(row.get("price_tier", "")),
-        "rating_numeric": int(row.get("rating_numeric", "")),
-        "in_stock": bool(row.get("in_stock", ""))
+        "title":          str(row.get("title", "Unknown")),
+        "price_eur":      float(row.get("price_eur", 0.0)),
+        "star_rating":    str(row.get("star_rating", "Unknown")),
+        "availability":   str(row.get("availability", "Unknown")),
+        "scraped_at":     scrape_time,
+        "price_tier":     str(row.get("price_tier", "Unknown")),
+        "rating_numeric": r_num,
+        "in_stock":       bool(row.get("in_stock", False))
     })
 
 result = supabase.table("books").insert(rows).execute()
 
 
-try:
-    response = supabase.table("books").insert(rows).execute()
-    print("Successfully inserted data!")
-    print(f"Inserted {len(rows)} rows.")
-except Exception as e:
-    print("--- SUPABASE ERROR ---")
-    print(e)
-    # This line forces GitHub Actions to show a Red X if it fails
-    exit(1)
+# try:
+#     response = supabase.table("books").insert(rows).execute()
+#     print("Successfully inserted data!")
+#     print(f"Inserted {len(rows)} rows.")
+# except Exception as e:
+#     print("--- SUPABASE ERROR ---")
+#     print(e)
+#     # This line forces GitHub Actions to show a Red X if it fails
+#     exit(1)
