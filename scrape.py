@@ -6,6 +6,24 @@ from datetime import datetime
 from supabase import create_client
 from datetime import datetime
 
+
+
+print("--- DEBUG START ---")
+print(f"Checking environment variables...")
+import os
+url = os.environ.get("SUPABASE_URL")
+key = os.environ.get("SUPABASE_KEY")
+
+if not url or not key:
+    print("❌ ERROR: Supabase credentials are missing!")
+else:
+    print(f"✅ Found URL starting with: {url[:10]}...")
+print("--- DEBUG END ---")
+
+
+
+
+
 url = "https://books.toscrape.com/"
 response = requests.get(url, timeout=20)
 response.encoding = "utf-8"                            # ensure £ signs display correctly
