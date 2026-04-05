@@ -93,12 +93,6 @@ df["in_stock"] = df["availability"].str.contains("In stock", na=False)
 # errors="ignore" means: if the column does not exist, do nothing
 df = df.drop(columns=["price_raw"], errors="ignore")
 
-filename = "dataset_auto.csv"
-
-if os.path.exists(filename):
-  df.to_csv(filename, mode = "a", header = False, index =False)
-else:
-  df.to_csv(filename, index=False)
 
 
 
